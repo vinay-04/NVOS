@@ -1,3 +1,4 @@
+// ignore_for_file: unused_local_variable, deprecated_member_use
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHandler {
@@ -11,13 +12,15 @@ class SupabaseHandler {
     var response =
         await client.from("Expense").select().order('amount').execute();
     final expenseList = response.data as List;
-    print(response.data);
     return expenseList;
   }
 
-  addData(double amount, String note, bool isDebited) async {
-    var response = client.from("Expense").insert(
-        {'amount': amount, 'note': note, 'isDebited': isDebited}).execute();
-    print(response);
+  addData(double amount, String note, bool isDebited, String dateTime) async {
+    var response = client.from("Expense").insert({
+      'amount': amount,
+      'note': note,
+      'isDebited': isDebited,
+      'dateTime': dateTime
+    }).execute();
   }
 }
