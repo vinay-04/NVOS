@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nvos/model/supabaseHandler.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -8,10 +9,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final _newAmount = TextEditingController();
-  final _newNote = TextEditingController();
-
-  void addData() {}
+  final amount = TextEditingController();
+  final note = TextEditingController();
+  SupabaseHandler supabaseHandler = SupabaseHandler();
   void addExpense() {
     showDialog(
       context: context,
@@ -21,19 +21,36 @@ class _HomeState extends State<Home> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              controller: _newAmount,
+              controller: amount,
               decoration: const InputDecoration(labelText: 'Amount'),
+              keyboardType: TextInputType.number,
             ),
             TextField(
-              controller: _newNote,
+              controller: note,
               decoration: const InputDecoration(labelText: 'Note'),
             ),
           ],
         ),
         actions: [
-          MaterialButton(
-            onPressed: addData,
-            child: const Text('Add'),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MaterialButton(
+                onPressed: () {
+                  supabaseHandler.addData(
+                      double.parse(amount.text), note.text, false);
+                },
+                child: const Text('Credited'),
+              ),
+              MaterialButton(
+                onPressed: () {
+                  supabaseHandler.addData(
+                      double.parse(amount.text), note.text, true);
+                },
+                child: const Text('Debited'),
+              ),
+            ],
           )
         ],
       ),
@@ -76,6 +93,68 @@ class _HomeState extends State<Home> {
           child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
+      body: FutureBuilder(
+        future: supabaseHandler.readData(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.black87,
+              ),
+            );
+          }
+          if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          try {
+            if (snapshot.data != null) {
+              return ListView.builder(
+                itemCount: snapshot.data.length ?? 0,
+                itemBuilder: (context, index) {
+                  return Container(
+                    color: snapshot.data[index]['status']
+                        ? Colors.white
+                        : Colors.red,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 200,
+                          child: Text(snapshot.data[index]['Expense']),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }
+          } on Exception catch (_) {
+            // make it explicit that this function can throw exceptions
+            rethrow;
+          }
+        },
+      ),
     );
   }
 }
+
+      // FutureBuilder(
+      //   future: supabaseHandler.readData(),
+      //   builder: (context, AsyncSnapshot snapshot) {
+      //     return ListView.builder(
+      //         itemCount:
+      //             snapshot.data!.length == null ? 0 : snapshot.data.length,
+      //         itemBuilder: (context, index) {
+      //           return Container(
+      //             color: snapshot.data[index]['status']
+      //                 ? Colors.white
+      //                 : Colors.red,
+      //             child: Row(children: [
+      //               Container(
+      //                 width: 200,
+      //                 child: Text(snapshot.data[index]['Expense']),
+      //               )
+      //             ]),
+      //           );
+      //         });
+      //   },
+      // ),
