@@ -1,16 +1,18 @@
 // ignore_for_file: unused_local_variable, deprecated_member_use
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHandler {
-  static String supabaseURL = "https://otgdfpqcnllfyjhxtmgh.supabase.co";
-  static String supabaseKEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90Z2RmcHFjbmxsZnlqaHh0bWdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTMwNjA5NjAsImV4cCI6MjAwODYzNjk2MH0.8NkW7ktlO0RqL6RbATbZlnW930gHZHSdwiHQNyFVvxs";
+  SupabaseHandler() {
+    dotenv.load(fileName: ".env");
+  }
+  static String supabaseURL = dotenv.env['supabaseURL']!;
+  static String supabaseKEY = dotenv.env['supabaseKEY']!;
 
   final client = SupabaseClient(supabaseURL, supabaseKEY);
 
   readData() async {
-    var response =
-        await client.from("Expense").select().order('amount').execute();
+    var response = await client.from("Expense").select().execute();
     final expenseList = response.data as List;
     return expenseList;
   }

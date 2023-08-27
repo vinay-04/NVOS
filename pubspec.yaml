@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   supabase_flutter: ^1.10.14
   fl_chart: ^0.63.0
+  flutter_dotenv: ^5.1.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
