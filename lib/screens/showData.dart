@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nvos/model/supabaseHandler.dart';
 import 'package:intl/intl.dart';
-import 'package:nvos/screens/balance.dart';
 
 class showData extends StatefulWidget {
   const showData({super.key});
@@ -123,7 +122,11 @@ class _showDataState extends State<showData> {
                 onRefresh: refresh,
                 child: Column(
                   children: [
-                    const Expanded(child: Balance()),
+                    const Center(
+                        child: Text(
+                      "Expense Tracker",
+                      style: TextStyle(fontSize: 36),
+                    )),
                     Expanded(
                       child: ListView.builder(
                         itemCount: snapshot.data.length,
