@@ -13,8 +13,9 @@ class _ProfileState extends State<Profile> {
     return const Center(
       child: Padding(
         padding: EdgeInsets.all(80.0),
-        child: Text("Made by the most common MAN.",
-            style: TextStyle(fontSize: 48)),
+        // child: Text("Made by the most common MAN.",
+        //     style: TextStyle(fontSize: 48)),
+        child: Text("About", style: TextStyle(fontSize: 48)),
       ),
     );
   }

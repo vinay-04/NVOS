@@ -3,11 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHandler {
-  SupabaseHandler() {
-    dotenv.load(fileName: ".env");
-  }
-  static String supabaseURL = dotenv.env['supabaseURL']!;
-  static String supabaseKEY = dotenv.env['supabaseKEY']!;
+  static String get supabaseURL => dotenv.env['supabaseURL'] ?? "";
+  static String get supabaseKEY => dotenv.env['supabaseKEY'] ?? "";
 
   final client = SupabaseClient(supabaseURL, supabaseKEY);
 
@@ -24,5 +21,15 @@ class SupabaseHandler {
       'isDebited': isDebited,
       'dateTime': dateTime
     }).execute();
+  }
+
+  getSum() async {
+    var response = await client
+        .from('Expense')
+        .select('amount')
+        .eq('isDebited', true)
+        .execute();
+    return response.data as List;
+    // final sum = await query.sum('amount');
   }
 }

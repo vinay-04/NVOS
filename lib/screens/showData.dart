@@ -123,9 +123,12 @@ class _showDataState extends State<showData> {
                 child: Column(
                   children: [
                     const Center(
-                        child: Text(
-                      "Expense Tracker",
-                      style: TextStyle(fontSize: 36),
+                        child: Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Text(
+                        "Expense Tracker",
+                        style: TextStyle(fontSize: 36),
+                      ),
                     )),
                     Expanded(
                       child: ListView.builder(
