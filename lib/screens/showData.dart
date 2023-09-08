@@ -87,7 +87,7 @@ class _showDataState extends State<showData> {
         format = "Sun, ";
     }
 
-    return format += DateFormat('dd/mm/yy - kk:mm').format(dateTime);
+    return format += DateFormat('dd/MM/yy - kk:mm').format(dateTime);
   }
 
   @override
