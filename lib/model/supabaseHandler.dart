@@ -3,8 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHandler {
-  static String get supabaseURL => dotenv.env['supabaseURL'] ?? "";
-  static String get supabaseKEY => dotenv.env['supabaseKEY'] ?? "";
+  static String get supabaseURL => dotenv.env['supabaseURL']!;
+  static String get supabaseKEY => dotenv.env['supabaseKEY']!;
 
   final client = SupabaseClient(supabaseURL, supabaseKEY);
 
